@@ -28,16 +28,6 @@ abstract class Query
     /** @var null */
     protected $sort = null;
 
-    /** @var string|null */
-    protected $store = null;
-
-    public function from(string $store)
-    {
-        $this->store = $store;
-
-        return $this;
-    }
-
     public function find(array $input)
     {
         $this->parseInput($input);
