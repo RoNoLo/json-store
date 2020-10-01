@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d70a4cbfa53eb1976718fb81d56e08bc",
+    "content-hash": "28c8527493e4bbd0d234fa5acdfce861",
     "packages": [
         {
             "name": "league/flysystem",
@@ -149,17 +149,17 @@
             "time": "2020-09-21T18:10:53+00:00"
         },
         {
-            "name": "ronolo/jsonquery",
-            "version": "1.1.1",
+            "name": "ronolo/json-query",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/RoNoLo/jsonquery.git",
-                "reference": "86e5b685a3e9a43f842675e468a089edaf532f33"
+                "url": "https://github.com/RoNoLo/json-query.git",
+                "reference": "c3d1aecb5740df2321dded7fedde455ed4f3c87b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/RoNoLo/jsonquery/zipball/86e5b685a3e9a43f842675e468a089edaf532f33",
-                "reference": "86e5b685a3e9a43f842675e468a089edaf532f33",
+                "url": "https://api.github.com/repos/RoNoLo/json-query/zipball/c3d1aecb5740df2321dded7fedde455ed4f3c87b",
+                "reference": "c3d1aecb5740df2321dded7fedde455ed4f3c87b",
                 "shasum": ""
             },
             "require": {
@@ -175,11 +175,7 @@
                     "RoNoLo\\JsonQuery\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "RoNoLo\\JsonQuery\\": "tests/src/"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -188,19 +184,15 @@
                     "name": "Ronald Locke"
                 }
             ],
-            "description": "A json data parser",
-            "homepage": "https://github.com/RoNoLo/jsonquery",
+            "description": "A JSON data parser",
+            "homepage": "https://github.com/ronolo/json-query",
             "keywords": [
                 "data",
                 "json",
                 "parser",
                 "query"
             ],
-            "support": {
-                "source": "https://github.com/RoNoLo/jsonquery/tree/1.1.1",
-                "issues": "https://github.com/RoNoLo/jsonquery/issues"
-            },
-            "time": "2019-11-06T08:04:28+00:00"
+            "time": "2020-10-01T19:19:41+00:00"
         }
     ],
     "packages-dev": [
@@ -973,6 +965,7 @@
             "keywords": [
                 "tokenizer"
             ],
+            "abandoned": true,
             "time": "2019-09-17T06:23:10+00:00"
         },
         {

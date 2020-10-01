@@ -1,16 +1,14 @@
-# JsonStorage
-
-*Warning: Heavy development! Do not use below 1.0.0!*
+# Json-Store
 
 A document store which uses any type of filesystem to store documents as JSON.
 It uses https://flysystem.thephpleague.com/ to abstract the storage space.
 
-It uses a NoSQL like query system for the documents and aims to use very less 
-memory (aka not loading all documents into memory to process them).
+It uses a NoSQL like query system for the documents and aims to use very low 
+memory footprint (aka not loading all documents into memory to process them).
 
 ## Usage
 
-First create a Config, which tells the store what adapter shall be used.
+First create a Config object.
 
 Then specify the adapter which shall be used to actually store the JSON files to
 a disc/cloud/memory/zip. See https://github.com/thephpleague/flysystem 
@@ -58,6 +56,79 @@ $result = $query->find([
 foreach ($result as $id => $document) {
     ; // do something with the document
 }
+```
+
+There are the following conditions implemented:
+
+```php
+[
+    '$eq' => 'isEqual',
+    '$neq' => 'isNotEqual',
+    '$gt' => 'isGreaterThan',
+    '$gte' => 'isGreaterThanOrEqual',
+    '$lt' => 'isLessThan',
+    '$lte' => 'isLessThanOrEqual',
+    '$in'    => 'isIn',
+    '$nin' => 'isNotIn',
+    '$null' => 'isNull',
+    '$n' => 'isNull',
+    '$notnull' => 'isNotNull',
+    '$nn' => 'isNotNull',
+    '$contains' => 'contains',
+    '$c' => 'contains',
+    '$ne' => 'isNotEmpty',
+    '$e' => 'isEmpty',
+    '$regex' => 'isRegExMatch',
+]
+```
+Examples can be found in the subdirectories of tests/src/query.
+
+A few examples from there:
+
+```php
+// SELECT * FROM store WHERE age = 20 OR age = 30 OR age = 40;
+$query = new Store\Query($store);
+$result = $query
+    ->find([
+        ["age" => 20],
+        ["age" => 30],
+        ["age" => 40]
+    ])
+    ->execute()
+;
+
+// SELECT index, guid FROM store ORDER BY index ASC LIMIT 60;
+$query = new Store\Query($store);
+$result = $query
+    ->find([])
+    ->fields(["index", "guid"])
+    ->sort("index", "asc")
+    ->limit(60)
+    ->execute()
+;
+
+// SELECT * FROM store WHERE age = 20 AND phone = '12345' OR age = 40;
+$query = new Store\Query($store);
+$result = $query
+    ->find([
+        '$or' => [
+            [
+                "age" => [
+                    '$eq' => 20,
+                ],
+                "phone" => [
+                    '$eq' => "12345",
+                ]
+            ],
+            [
+                "age" => [
+                    '$eq' => 40
+                ]
+            ]
+        ]
+    ])
+    ->execute()
+;
 ```
 
 ## Goals

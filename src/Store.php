@@ -3,7 +3,7 @@
 namespace RoNoLo\JsonStorage;
 
 use League\Flysystem\{AdapterInterface, FileNotFoundException, Filesystem};
-use RoNoLo\JsonStorage\Exception\{DatabaseRuntimeException, DocumentNotFoundException, DocumentNotStoredException};
+use RoNoLo\JsonStorage\Exception\{DocumentNotFoundException, DocumentNotStoredException};
 use RoNoLo\JsonStorage\Store\Config;
 use RoNoLo\JsonStorage\Store\DocumentIterator;
 
@@ -53,7 +53,11 @@ class Store
 
     public function __destruct()
     {
-        $this->flysystem->put(self::STORE_INDEX_FILE, json_encode($this->index));
+        if (count($this->index)) {
+            $this->flysystem->put(self::STORE_INDEX_FILE, json_encode($this->index));
+        } else {
+            $this->flysystem->delete(self::STORE_INDEX_FILE);
+        }
     }
 
     /**

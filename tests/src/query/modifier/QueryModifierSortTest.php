@@ -7,7 +7,7 @@ use RoNoLo\JsonStorage\Store\Query;
 class QueryModifierSortTest extends QueryTestBase
 {
     /**
-     * SELECT index, guid FROM store ORDER BY index ASC;
+     * SELECT index, guid FROM store ORDER BY index ASC LIMIT 60;
      */
     public function testRequestingDocumentsWithSort()
     {

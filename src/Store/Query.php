@@ -37,7 +37,7 @@ class Query extends AbstractQuery
                     $ids[$document->__id] = 1;
                 } else {
                     $sortField = key($this->sort);
-                    $sortValue = $jsonQuery->get($sortField);
+                    $sortValue = $jsonQuery->query($sortField);
 
                     if (is_array($sortValue)) {
                         throw new QueryExecutionException("The field to sort by returned more than one value from a document.");

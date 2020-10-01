@@ -90,7 +90,7 @@ abstract class DocumentIterator implements \Iterator
                 $to = $from;
             }
 
-            $doc[$to] = $jsonQuery->get($from);
+            $doc[$to] = $jsonQuery->query($from);
         }
 
         return $this->assoc ? $doc : json_decode(json_encode($doc));

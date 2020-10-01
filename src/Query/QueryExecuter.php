@@ -80,7 +80,7 @@ class QueryExecuter
 
                     foreach ($conditions as $op => $value) {
                         $list[] = function (JsonQuery $jsonQuery) use ($mixed, $value, $op) {
-                            $fieldValue = $jsonQuery->get($mixed);
+                            $fieldValue = $jsonQuery->query($mixed);
 
                             return (new ConditionProvider())->get($op, $fieldValue, $value)();
                         };
@@ -88,7 +88,7 @@ class QueryExecuter
                 } else {
                     // Simple isEqual
                     $list[] = function (JsonQuery $jsonQuery) use ($mixed, $args) {
-                        return $jsonQuery->get($mixed) == $args;
+                        return $jsonQuery->query($mixed) == $args;
                     };
                 }
             }

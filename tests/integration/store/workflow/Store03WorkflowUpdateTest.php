@@ -14,7 +14,7 @@ class Store03WorkflowUpdateTest extends StoreWorkflowTestBase
         foreach ($result as $id => $data) {
             $data->age = 99;
 
-            $this->db->put('something', $data);
+            $this->store->put($data);
         }
 
         $this->assertTrue(true);
