@@ -1,7 +1,7 @@
 {
     "name": "ronolo/json-store",
-    "description": "A lightweight JSON document store.",
-    "keywords": ["flat", "file", "db", "document", "nosql", "json"],
+    "description": "A lightweight JSON document store, which can be queried like a NoSQL database.",
+    "keywords": ["file", "db", "document", "nosql", "json"],
     "homepage": "http://github.com/ronolo/json-store",
     "license": "MIT",
     "authors": [

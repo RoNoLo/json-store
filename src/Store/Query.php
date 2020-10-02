@@ -62,7 +62,12 @@ class Query extends AbstractQuery
         // Check for 'skip'
         if ($this->skip > 0) {
             if ($this->skip > $total) {
-                return new Result($this->store, $ids, $this->fields, $total, $assoc);
+                return Result::fromJson($this->store, [
+                    "ids" => $ids,
+                    "fields" => $this->fields,
+                    "total" => $total,
+                    "assoc" => $assoc,
+                ]);
             } else {
                 $ids = array_slice($ids, $this->skip);
             }
@@ -73,6 +78,11 @@ class Query extends AbstractQuery
             $ids = array_slice($ids, 0, $this->limit);
         }
 
-        return new Result($this->store, $ids, $this->fields, $total, $assoc);
+        return Result::fromJson($this->store, [
+            "ids" => $ids,
+            "fields" => $this->fields,
+            "total" => $total,
+            "assoc" => $assoc,
+        ]);
     }
 }

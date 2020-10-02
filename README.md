@@ -3,6 +3,9 @@
 A document store which uses any type of filesystem to store documents as JSON.
 It uses https://flysystem.thephpleague.com/ to abstract the storage space.
 
+As by definition a *store* acts like ONE table in a database. You can put 
+everything into one store or have many stores for different JSON objects.
+
 It uses a NoSQL like query system for the documents and aims to use very low 
 memory footprint (aka not loading all documents into memory to process them).
 
@@ -26,6 +29,9 @@ $store = new Store($config);
 
 The store is now ready. We can now store, read, delete and update documents. As a very
 basic usage, we can read every document back by ID.
+
+Note: Update is always an update of the whole object. It is not possible to update single
+fields via store command.
 
 As a speed bonus the store keeps all document IDs in an index file, which will be loaded
 on store construct. 
@@ -140,4 +146,8 @@ $result = $query
 - (very) low memory usage even for huge results
 - NoSQL like query syntax (CouchDB style)
 - Abstract data location via https://flysystem.thephpleague.com/
-- Someday: Symfony/Laravel bundle
+
+## Limitations
+
+- Any limitation the underlying flysystem adapter has
+- If the creation of an unique ID fails, there will be an exception 

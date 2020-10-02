@@ -11,15 +11,24 @@ use RoNoLo\JsonStorage\Store;
  * Result
  *
  * A collection of Documents returned from a Query.
+ *
+ * To save memory the Result only contains the document IDs. On request the store
+ * requests the full JSON document and returns it.
  */
 class Result extends AbstractResult
 {
     /** @var Store */
     protected $store;
 
-    public static function fromJson(Store $store, $data)
+    public static function fromJson(Store $store, array $data = [])
     {
-        $data = (array) $data;
+        // Setup defaults
+        $data += [
+            "ids" => [],
+            "fields" => [],
+            "total" => 0,
+            "assoc" => false
+        ];
 
         $ids = $data['ids'];
         $fields = $data['fields'];
@@ -38,7 +47,7 @@ class Result extends AbstractResult
      * @param int $total
      * @param bool $assoc
      */
-    public function __construct(Store $store, array $ids = [], array $fields = [], int $total = 0,  bool $assoc = false)
+    protected function __construct(Store $store, array $ids = [], array $fields = [], int $total = 0,  bool $assoc = false)
     {
         $this->store = $store;
 

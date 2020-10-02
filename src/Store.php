@@ -25,6 +25,13 @@ class Store
     /** @var array */
     protected $index = [];
 
+    /**
+     * @param Config $config
+     *
+     * @return static
+     *
+     * @throws FileNotFoundException
+     */
     public static function create(Config $config)
     {
         return new static($config->getAdapter(), $config->getOptions());
@@ -35,6 +42,7 @@ class Store
      *
      * @param AdapterInterface $adapter
      * @param array $options
+     *
      * @throws FileNotFoundException
      */
     protected function __construct(AdapterInterface $adapter, array $options = [])
@@ -64,6 +72,7 @@ class Store
      * Tells if a document exists.
      *
      * @param string $id
+     *
      * @return bool
      */
     public function has(string $id): bool
@@ -79,6 +88,7 @@ class Store
      * @param array $documents
      *
      * @return array Of IDs
+     *
      * @throws DocumentNotStoredException
      */
     public function putMany(array $documents): array
@@ -106,6 +116,7 @@ class Store
      * @param \stdClass|array $document
      *
      * @return string
+     *
      * @throws DocumentNotStoredException
      */
     public function put($document): string
@@ -148,6 +159,7 @@ class Store
      * @param bool $assoc Will be used for json_decode's 2nd argument.
      *
      * @return bool|false|mixed|string
+     *
      * @throws DocumentNotFoundException
      */
     public function read(string $id, $assoc = false)
