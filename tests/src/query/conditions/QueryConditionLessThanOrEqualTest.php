@@ -11,73 +11,73 @@ use RoNoLo\JsonStorage\Store\Query;
  *
  * @package RoNoLo\JsonStorage
  */
-class QueryConditionGreaterThanOrEqualOrEqualTest extends QueryTestBase
+class QueryConditionLessThanOrEqualTest extends QueryTestBase
 {
     /**
-     * SELECT * FROM store WHERE index >= 500;
+     * SELECT * FROM store WHERE index <= 500;
      */
-    public function testCommandGreaterThanOrEqualWithInt()
+    public function testCommandLessThanOrEqualWithInt()
     {
         $query = new Query($this->store);
         $result = $query
             ->find([
                 "index" => [
-                    '$gte' => 500,
+                    '$lte' => 500,
                 ]
             ])
             ->execute()
         ;
 
-        $expected = 500;
+        $expected = 501;
 
         $this->assertEquals($expected, $result->count());
     }
 
     /**
-     * SELECT * FROM store WHERE eyeColor >= "green";
+     * SELECT * FROM store WHERE eyeColor <= "green";
      */
-    public function testCommandGreaterThanOrEqualWithString()
+    public function testCommandLessThanOrEqualWithString()
     {
         $query = new Query($this->store);
         $result = $query
             ->find([
                 "eyeColor" => [
-                    '$gte' => "green",
+                    '$lte' => "green",
                 ]
             ])
             ->execute()
         ;
 
-        $expected = 338;
+        $expected = 1000;
 
         $this->assertEquals($expected, $result->count());
     }
 
     /**
-     * SELECT * FROM store WHERE balance >= 3725.49;
+     * SELECT * FROM store WHERE balance <= 3725.49;
      */
-    public function testCommandGreaterThanOrEqualWithFloat()
+    public function testCommandLessThanOrEqualWithFloat()
     {
         $query = new Query($this->store);
         $result = $query
             ->find([
                 "balance" => [
-                    '$gte' => 3725.49,
+                    '$lte' => 3725.49,
                 ]
             ])
             ->execute()
         ;
 
-        $expected = 84;
+        $expected = 917;
 
         $this->assertEquals($expected, $result->count());
     }
 
     /**
-     * SELECT * FROM store WHERE name > { first: "Morales", last: "Levy" };
+     * SELECT * FROM store WHERE name <= { first: "Morales", last: "Levy" };
      *
      * Note: it is up to PHP to decide what $value > $comparable for example
-     *       { first: "Emma", last: "John" } > { first: "Morales", last: "Levy" }
+     *       { first: "Emma", last: "John" } <= { first: "Morales", last: "Levy" }
      *       is as a boolean result.
      */
     public function testCommandEqualsWithObject()
@@ -86,7 +86,7 @@ class QueryConditionGreaterThanOrEqualOrEqualTest extends QueryTestBase
         $result = $query
             ->find([
                 "name" => [
-                    '$gte' => (object) [
+                    '$lte' => (object) [
                         "first" => "Morales",
                         "last" => "Levy"
                     ],
@@ -95,13 +95,13 @@ class QueryConditionGreaterThanOrEqualOrEqualTest extends QueryTestBase
             ->execute()
         ;
 
-        $expected = 326;
+        $expected = 675;
 
         $this->assertEquals($expected, $result->count());
     }
 
     /**
-     * SELECT * FROM store WHERE registered > "2009-07-01T09:50:13";
+     * SELECT * FROM store WHERE registered <= "2009-08-01T09:50:13";
      */
     public function testCommandWithDates()
     {
@@ -109,13 +109,13 @@ class QueryConditionGreaterThanOrEqualOrEqualTest extends QueryTestBase
         $result = $query
             ->find([
                 "registered" => [
-                    '$gte' => new \DateTime("2009-08-01T09:50:13"),
+                    '$lte' => new \DateTime("2009-08-01T09:50:13"),
                 ]
             ])
             ->execute()
         ;
 
-        $expected = 387;
+        $expected = 613;
 
         $this->assertEquals($expected, $result->count());
     }

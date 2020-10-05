@@ -190,7 +190,7 @@ class ConditionProvider
                     return floatval($value) < $comparable;
 
                 case is_string($comparable):
-                    return (string) $value < $comparable;
+                    return strcmp($value, $comparable) < 0;
 
                 default:
                     return $value < $comparable;
@@ -264,7 +264,7 @@ class ConditionProvider
                     return floatval($value) <= $comparable;
 
                 case is_string($comparable):
-                    return (string) $value <= $comparable;
+                    return strcmp($value, $comparable) <= 0;
 
                 default:
                     return $value <= $comparable;

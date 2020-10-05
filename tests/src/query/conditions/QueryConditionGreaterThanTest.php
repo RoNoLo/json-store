@@ -80,7 +80,7 @@ class QueryConditionGreaterThanTest extends QueryTestBase
      *       { first: "Emma", last: "John" } > { first: "Morales", last: "Levy" }
      *       is as a boolean result.
      */
-    public function testSimpleEqualsWithObjectAsSpecialCommand()
+    public function testCommandEqualsWithObject()
     {
         $query = new Query($this->store);
         $result = $query
