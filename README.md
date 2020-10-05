@@ -34,7 +34,8 @@ Note: Update is always an update of the whole object. It is not possible to upda
 fields via store command.
 
 As a speed bonus the store keeps all document IDs in an index file, which will be loaded
-on store construct. 
+on store construct. Another speed bonus would be to use the caching and speedup adapters
+found on the https://flysystem.thephpleague.com/v1/docs/advanced/caching/ page.
 
 ```php
 $document = file_get_contents('file/with/json/object.json');
