@@ -5,12 +5,19 @@ namespace RoNoLo\JsonStorage;
 use RoNoLo\JsonStorage\Store\Query;
 
 /**
- * List of Tests to test the 'isEqual' condition in simple and
- * command form. This is also a reference how to use it and
- * which value types are are supported.
+ * List of Tests to test the 'GreaterThanOrEqual' aka '$gte' conditions.
+ *
+ * Usage:
+ *   field => [ '$gte' => int|float|datetime|string ]
+ * Translated to:
+ *   is field-int greater than or equal query-int? or
+ *   is field-float greater than or equal query-float? or
+ *   is field-datetime greater than or equal query-datetime? or
+ *   is field-string greater than or equal query-string?
  *
  * @package RoNoLo\JsonStorage
  */
+
 class QueryConditionGreaterThanOrEqualOrEqualTest extends QueryTestBase
 {
     /**

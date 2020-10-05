@@ -5,9 +5,15 @@ namespace RoNoLo\JsonStorage;
 use RoNoLo\JsonStorage\Store\Query;
 
 /**
- * List of Tests to test the 'isEqual' condition in simple and
- * command form. This is also a reference how to use it and
- * which value types are are supported.
+ * List of Tests to test the 'LessThan' aka '$lt' conditions.
+ *
+ * Usage:
+ *   field => [ '$lt' => int|float|datetime|string ]
+ * Translated to:
+ *   is field-int less than query-int? or
+ *   is field-float less than query-float? or
+ *   is field-datetime less than query-datetime? or
+ *   is field-string less than query-string?
  *
  * @package RoNoLo\JsonStorage
  */

@@ -5,9 +5,16 @@ namespace RoNoLo\JsonStorage;
 use RoNoLo\JsonStorage\Store\Query;
 
 /**
- * List of Tests to test the 'isEqual' condition in simple and
- * command form. This is also a reference how to use it and
- * which value types are are supported.
+ * List of Tests to test the 'IsEqual' aka '$eq' conditions.
+ *
+ * Usage:
+ *   field = int|float|string
+ *   field => [ '$eq' => int|float|datetime|string|array|object ]
+ * Translated to:
+ *   is field-int equal to query-int? or
+ *   is field-float equal to query-float? or
+ *   is field-datetime equal to query-datetime? or
+ *   is field-string equal to query-string? ...
  *
  * @package RoNoLo\JsonStorage
  */

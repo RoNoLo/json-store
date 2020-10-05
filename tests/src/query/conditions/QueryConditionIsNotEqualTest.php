@@ -5,12 +5,19 @@ namespace RoNoLo\JsonStorage;
 use RoNoLo\JsonStorage\Store\Query;
 
 /**
- * List of Tests to test the 'isEqual' condition in simple and
- * command form. This is also a reference how to use it and
- * which value types are are supported.
+ * List of Tests to test the 'IsNotEqual' aka '$neq' conditions.
+ *
+ * Usage:
+ *   field => [ '$neq' => int|float|datetime|string|array|object ]
+ * Translated to:
+ *   is field-int not equal to query-int? or
+ *   is field-float not equal to query-float? or
+ *   is field-datetime not equal to query-datetime? or
+ *   is field-string not equal to query-string? ...
  *
  * @package RoNoLo\JsonStorage
  */
+
 class QueryConditionIsNotEqualTest extends QueryTestBase
 {
     /**

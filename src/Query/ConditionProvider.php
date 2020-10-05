@@ -14,15 +14,13 @@ class ConditionProvider
         '$lte' => 'isLessThanOrEqual',
         '$in'    => 'isIn',
         '$nin' => 'isNotIn',
-        '$null' => 'isNull',
-        '$n' => 'isNull',
-        '$notnull' => 'isNotNull',
         '$nn' => 'isNotNull',
+        '$null' => 'isNull',
         '$contains' => 'contains',
-        '$c' => 'contains',
-        '$ne' => 'isNotEmpty',
-        '$e' => 'isEmpty',
+        '$ne' => 'isEmpty',
+        '$empty' => 'isEmpty',
         '$regex' => 'isRegExMatch',
+        '$exists' => 'isExist',
     ];
 
     public function get($op, $value, $comparable)
@@ -36,14 +34,9 @@ class ConditionProvider
             case '$lte': return $this->isLessThanOrEqual($value, $comparable);
             case '$in': return $this->isIn($value, $comparable);
             case '$nin': return $this->isNotIn($value, $comparable);
-            case '$n':
-            case '$null': return $this->isNull($value);
-            case '$nn':
-            case '$notnull': return $this->isNotNull($value);
-            case '$c':
+            case '$null': return $this->isNull($value, $comparable);
             case '$contains': return $this->contains($value, $comparable);
-            case '$ne': return $this->isNotEmpty($value);
-            case '$e': return $this->isEmpty($value);
+            case '$empty': return $this->isEmpty($value, $comparable);
             case '$regex': return $this->isRegExMatch($value, $comparable);
             default:
                 throw new \Exception(sprintf("%s is not implemented yet", $op));
@@ -287,7 +280,7 @@ class ConditionProvider
      * In String
      *
      * @param mixed $value
-     * @param array $comparable
+     * @param array|string $comparable
      *
      * @return \Closure
      */
@@ -308,10 +301,12 @@ class ConditionProvider
     }
 
     /**
-     * Not in array
+     * Not In Array
+     * or
+     * Not In String
      *
      * @param mixed $value
-     * @param array $comparable
+     * @param array|string $comparable
      *
      * @return \Closure
      */
@@ -319,35 +314,45 @@ class ConditionProvider
     {
         return function () use ($value, $comparable)
         {
-            return (is_array($comparable) && !in_array($value, $comparable));
+            switch (true) {
+                case is_array($comparable):
+                    return !in_array($value, $comparable);
+
+                case is_string($comparable) && is_string($value):
+                    return strpos($comparable, $value) === false;
+            }
+
+            return true;
         };
     }
 
     /**
-     * Is null equal
+     * Is Null
      *
      * @param mixed $value
+     * @param bool $comparable
      *
      * @return \Closure
      */
-    public function isNull($value)
+    public function isNull($value, bool $comparable)
     {
-        return function () use ($value)
+        return function () use ($value, $comparable)
         {
-            return is_null($value);
+            return $comparable ? is_null($value) : !is_null($value);
         };
     }
 
     /**
-     * Is not null equal
+     * Is Not Null
      *
      * @param mixed $value
+     * @param bool $comparable
      *
      * @return \Closure
      */
-    public function isNotNull($value)
+    public function isNotNull($value, bool $comparable)
     {
-        return function () use ($value)
+        return function () use ($value, $comparable)
         {
             return !is_null($value);
         };
@@ -378,11 +383,13 @@ class ConditionProvider
      * Is empty string or empty array.
      *
      * @param mixed $value
+     * @param bool $comparable
+     *
      * @return \Closure
      */
-    public function isEmpty($value)
+    public function isEmpty($value, bool $comparable)
     {
-        return function () use ($value)
+        return function () use ($value, $comparable)
         {
             if (is_array($value)) {
                 return count($value) === 0;

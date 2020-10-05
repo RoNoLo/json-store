@@ -2,7 +2,7 @@
 
 namespace RoNoLo\JsonStorage;
 
-class StoreTestBase extends TestBase
+abstract class StoreTestBase extends TestBase
 {
     protected function fillStore(Store $store, $filePath)
     {

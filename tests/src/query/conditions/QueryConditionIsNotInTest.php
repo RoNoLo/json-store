@@ -5,20 +5,20 @@ namespace RoNoLo\JsonStorage;
 use RoNoLo\JsonStorage\Store\Query;
 
 /**
- * List of Tests to test the 'IsIn' aka '$in' conditions.
+ * List of Tests to test the 'IsNotIn' aka '$nin' conditions.
  *
  * Usage:
- *   field => [ '$in' => array|string ]
+ *   field => [ '$nin' => array|string ]
  * Translated to:
- *   is field-string in query-string? or
- *   is field-value in query-array
+ *   is field-string not in query-string? or
+ *   is field-value not in query-array
  *
  * @package RoNoLo\JsonStorage
  */
-class QueryConditionIsInTest extends QueryTestBase
+class QueryConditionIsNotInTest extends QueryTestBase
 {
     /**
-     * PHP equivalent is: strpos($comparable, $value) !== false
+     * PHP equivalent is: strpos($comparable, $value) === false
      *
      * SELECT * FROM store WHERE ...;
      */
@@ -28,19 +28,19 @@ class QueryConditionIsInTest extends QueryTestBase
         $result = $query
             ->find([
                 "eyeColor" => [
-                    '$in' => "lightbrown",
+                    '$nin' => "lightbrown",
                 ]
             ])
             ->execute()
         ;
 
-        $expected = 337;
+        $expected = 663;
 
         $this->assertEquals($expected, $result->count());
     }
 
     /**
-     * SELECT * FROM store WHERE eyeColor IN ( "brown", "green" );
+     * SELECT * FROM store WHERE eyeColor NOT IN ( "brown", "green" );
      */
     public function testCommandIsInWithArrayOfString()
     {
@@ -48,7 +48,7 @@ class QueryConditionIsInTest extends QueryTestBase
         $result = $query
             ->find([
                 "eyeColor" => [
-                    '$in' => [
+                    '$nin' => [
                         "brown",
                         "green"
                     ]
@@ -57,13 +57,13 @@ class QueryConditionIsInTest extends QueryTestBase
             ->execute()
         ;
 
-        $expected = 675;
+        $expected = 325;
 
         $this->assertEquals($expected, $result->count());
     }
 
     /**
-     * SELECT * FROM store WHERE age IN ( 22, 30 );
+     * SELECT * FROM store WHERE age NOT IN ( 22, 30 );
      */
     public function testCommandIsInWithArrayOfInt()
     {
@@ -71,7 +71,7 @@ class QueryConditionIsInTest extends QueryTestBase
         $result = $query
             ->find([
                 "age" => [
-                    '$in' => [
+                    '$nin' => [
                         22,
                         30
                     ]
@@ -80,7 +80,7 @@ class QueryConditionIsInTest extends QueryTestBase
             ->execute()
         ;
 
-        $expected = 44;
+        $expected = 956;
 
         $this->assertEquals($expected, $result->count());
     }
