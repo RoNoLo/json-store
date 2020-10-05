@@ -5,12 +5,14 @@ namespace RoNoLo\JsonStorage;
 use RoNoLo\JsonStorage\Store\Query;
 
 /**
- * List of Tests to test the 'IsNull' aka '$null' or '$n' conditions.
+ * List of Tests to test the 'IsNull' aka '$null' conditions.
  *
  * Usage:
- *   field => [ '$n' => true ]
+ *   field => [ '$null' => true ]
+ *   field => [ '$null' => false ]
  * Translated to:
- *   does field exists, but field-value is null?
+ *   does field exists, but field-value is null? (if => true)
+ *   does field exists, but field-value is not null? (if => false)
  *
  * @package RoNoLo\JsonStorage
  */

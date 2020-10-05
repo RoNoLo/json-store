@@ -392,9 +392,9 @@ class ConditionProvider
         return function () use ($value, $comparable)
         {
             if (is_array($value)) {
-                return count($value) === 0;
+                return $comparable ? count($value) === 0 : count($value) > 0;
             } elseif (is_string($value)) {
-                return trim($value) === '';
+                return $comparable ? trim($value) === '' : trim($value) !== '';
             }
 
             return false;
