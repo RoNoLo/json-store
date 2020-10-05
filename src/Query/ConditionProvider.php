@@ -36,7 +36,7 @@ class ConditionProvider
             case '$nin': return $this->isNotIn($value, $comparable);
             case '$nn': return $this->isNull($value, !$comparable);
             case '$null': return $this->isNull($value, $comparable);
-            case '$nc': return $this->contains($value, !$comparable);
+            case '$nc': return $this->notContains($value, $comparable);
             case '$contains': return $this->contains($value, $comparable);
             case '$ne': return $this->isEmpty($value, !$comparable);
             case '$empty': return $this->isEmpty($value, $comparable);
@@ -432,8 +432,8 @@ class ConditionProvider
     /**
      * Contains substring in string
      *
-     * @param string $value
-     * @param string $comparable
+     * @param mixed $value
+     * @param mixed $comparable
      *
      * @return \Closure
      */
@@ -441,7 +441,61 @@ class ConditionProvider
     {
         return function () use ($value, $comparable)
         {
-            return (strpos($value, $comparable) !== false);
+            switch (true) {
+                case is_string($value) && is_string($comparable):
+                    return strpos($value, $comparable) !== false;
+
+                case is_string($value) && is_array($comparable):
+                    foreach ($comparable as $item) {
+                        if (strpos($value, $item) !== false) {
+                            return true;
+                        }
+                    }
+                    return false;
+
+                case is_array($value) && !is_array($comparable):
+                    return in_array($comparable, $value, true);
+
+                case is_array($value) && is_array($comparable):
+                    return count(array_diff($comparable, $value)) != count($comparable);
+            }
+
+            return false;
+        };
+    }
+
+    /**
+     * Contains substring in string
+     *
+     * @param mixed $value
+     * @param mixed $comparable
+     *
+     * @return \Closure
+     */
+    public function notContains($value, $comparable)
+    {
+        return function () use ($value, $comparable)
+        {
+            switch (true) {
+                case is_string($value) && is_string($comparable):
+                    return strpos($value, $comparable) === false;
+
+                case is_string($value) && is_array($comparable):
+                    foreach ($comparable as $item) {
+                        if (strpos($value, $item) === false) {
+                            return true;
+                        }
+                    }
+                    return false;
+
+                case is_array($value) && !is_array($comparable):
+                    return !in_array($comparable, $value, true);
+
+                case is_array($value) && is_array($comparable):
+                    return count(array_diff($comparable, $value)) == count($comparable);
+            }
+
+            return true;
         };
     }
 
