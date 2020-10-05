@@ -2,6 +2,7 @@
 
 namespace RoNoLo\JsonStorage\Query;
 
+use RoNoLo\JsonQuery\ValueNotFound;
 use RoNoLo\JsonStorage\Exception\QuerySyntaxException;
 use RoNoLo\JsonQuery\JsonQuery;
 
@@ -88,7 +89,13 @@ class QueryExecuter
                 } else {
                     // Simple isEqual
                     $list[] = function (JsonQuery $jsonQuery) use ($mixed, $args) {
-                        return $jsonQuery->query($mixed) == $args;
+                        $queryResult = $jsonQuery->query($mixed);
+
+                        if ($queryResult instanceof ValueNotFound) {
+                            return false;
+                        }
+
+                        return $queryResult == $args;
                     };
                 }
             }

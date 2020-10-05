@@ -73,6 +73,9 @@ class ConditionProvider
                 case is_string($comparable):
                     return (string) $value === $comparable;
 
+                case is_object($comparable) && $comparable instanceof \stdClass:
+                    return $value == $comparable;
+
                 default:
                     return $value === $comparable;
 
@@ -110,6 +113,9 @@ class ConditionProvider
 
                 case is_string($comparable):
                     return (string) $value !== $comparable;
+
+                case is_object($comparable) && $comparable instanceof \stdClass:
+                    return $value != $comparable;
 
                 default:
                     return $value !== $comparable;
