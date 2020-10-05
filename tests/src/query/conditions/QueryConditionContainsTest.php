@@ -13,16 +13,20 @@ use RoNoLo\JsonStorage\Store\Query;
  * Usage:
  *   field => [ '$contains' => array|string|int|float ]
  * Translated to:
- *   is field-string in query-string? or
- *   is field-string in query-string? or
- *   is field-value in query-array
+ *   is query-string in field-string? or
+ *   is any query-array-strings in field-string? or
+ *   is any query-array-int in field-string? or
+ *   is query-string in field-string-array? or
+ *   is query-int in field-int-array? or
+ *   is query-string-array in field-string-array? or
+ *   is query-int-array in field-int-array?
  *
  * @package RoNoLo\JsonStorage
  */
 class QueryConditionContainsTest extends QueryTestBase
 {
     /**
-     * SELECT * FROM store WHERE ...;
+     * SELECT * FROM store WHERE ...; ???
      */
     public function testCommandContainsWithStringInString()
     {
@@ -42,9 +46,7 @@ class QueryConditionContainsTest extends QueryTestBase
     }
 
     /**
-     * PHP equivalent is: strpos($comparable, $value) !== false
-     *
-     * SELECT * FROM store WHERE ...;
+     * SELECT * FROM store WHERE ...; ???
      */
     public function testCommandContainsWithMultipleStringsInString()
     {
@@ -64,7 +66,7 @@ class QueryConditionContainsTest extends QueryTestBase
     }
 
     /**
-     * SELECT * FROM store WHERE eyeColor IN ( "brown", "green" );
+     * SELECT * FROM store WHERE ...; ??
      */
     public function testCommandContainsWithStringInArray()
     {
@@ -84,7 +86,7 @@ class QueryConditionContainsTest extends QueryTestBase
     }
 
     /**
-     * SELECT * FROM store WHERE eyeColor IN ( "brown", "green" );
+     * SELECT * FROM store WHERE ...; ??
      */
     public function testCommandContainsWithIntInArray()
     {
@@ -104,7 +106,7 @@ class QueryConditionContainsTest extends QueryTestBase
     }
 
     /**
-     * SELECT * FROM store WHERE eyeColor IN ( "brown", "green" );
+     * SELECT * FROM store WHERE ...; ??
      */
     public function testCommandContainsWithStringArrayInArray()
     {
@@ -127,7 +129,7 @@ class QueryConditionContainsTest extends QueryTestBase
     }
 
     /**
-     * SELECT * FROM store WHERE eyeColor IN ( "brown", "green" );
+     * SELECT * FROM store WHERE ...; ??
      */
     public function testCommandContainsWithIntArrayInArray()
     {
