@@ -10,7 +10,7 @@ use RoNoLo\JsonStorage\Store\Query;
  * Usage:
  *   field => [ '$in' => array|string ]
  * Translated to:
- *   is field-string in query-string?
+ *   is field-string in query-string? or
  *   is field-value in array
  *
  * @package RoNoLo\JsonStorage
