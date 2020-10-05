@@ -20,7 +20,6 @@ class ConditionProvider
         '$ne' => 'isEmpty',
         '$empty' => 'isEmpty',
         '$regex' => 'isRegExMatch',
-        '$exists' => 'isExist',
     ];
 
     public function get($op, $value, $comparable)
