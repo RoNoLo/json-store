@@ -34,8 +34,11 @@ class ConditionProvider
             case '$lte': return $this->isLessThanOrEqual($value, $comparable);
             case '$in': return $this->isIn($value, $comparable);
             case '$nin': return $this->isNotIn($value, $comparable);
+            case '$nn': return $this->isNull($value, !$comparable);
             case '$null': return $this->isNull($value, $comparable);
+            case '$nc': return $this->contains($value, !$comparable);
             case '$contains': return $this->contains($value, $comparable);
+            case '$ne': return $this->isEmpty($value, !$comparable);
             case '$empty': return $this->isEmpty($value, $comparable);
             case '$regex': return $this->isRegExMatch($value, $comparable);
             default:
