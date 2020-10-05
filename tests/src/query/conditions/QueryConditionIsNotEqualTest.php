@@ -11,12 +11,12 @@ use RoNoLo\JsonStorage\Store\Query;
  *
  * @package RoNoLo\JsonStorage
  */
-class QueryConditionsIsNotEqualTest extends QueryTestBase
+class QueryConditionIsNotEqualTest extends QueryTestBase
 {
     /**
      * SELECT * FROM store WHERE index != 40;
      */
-    public function testSimpleEqualsWithIntAsSpecialCommand()
+    public function testCommandEqualsWithInt()
     {
         $query = new Query($this->store);
         $result = $query
@@ -36,7 +36,7 @@ class QueryConditionsIsNotEqualTest extends QueryTestBase
     /**
      * SELECT * FROM store WHERE eyeColor = "green";
      */
-    public function testSimpleEqualsWithStringAsSpecialCommand()
+    public function testCommandEqualsWithString()
     {
         $query = new Query($this->store);
         $result = $query
@@ -56,7 +56,7 @@ class QueryConditionsIsNotEqualTest extends QueryTestBase
     /**
      * SELECT * FROM store WHERE balance != 1086.98;
      */
-    public function testSimpleEqualsWithFloatAsSpecialCommand()
+    public function testCommandEqualsWithFloat()
     {
         $query = new Query($this->store);
         $result = $query
@@ -76,7 +76,7 @@ class QueryConditionsIsNotEqualTest extends QueryTestBase
     /**
      * SELECT * FROM store WHERE name != { first: "Morales", last: "levy" };
      */
-    public function testSimpleEqualsWithObjectAsSpecialCommand()
+    public function testCommandEqualsWithObject()
     {
         $query = new Query($this->store);
         $result = $query
@@ -97,9 +97,38 @@ class QueryConditionsIsNotEqualTest extends QueryTestBase
     }
 
     /**
-     * SELECT * FROM store WHERE registered != "2009-07-01T09:50:13";
+     * SELECT * FROM store WHERE parents.mother.tags != [ "eiusmod", "non", "labore", "non", "deserunt" ];
      */
-    public function testSimpleEqualsWithDatesAsSpecialCommand()
+    public function testCommandEqualsWithArray()
+    {
+        $query = new Query($this->store);
+        $result = $query
+            ->find([
+                "parents.mother.tags" => [
+                    '$neq' => [
+                        "eiusmod",
+                        "non",
+                        "labore",
+                        "non",
+                        "deserunt"
+                    ],
+                ],
+            ])
+            ->execute()
+        ;
+
+        $expected = 999;
+
+        $this->assertEquals($expected, $result->count());
+    }
+
+    /**
+     * SELECT * FROM store WHERE registered != "2009-07-01T09:50:13";
+     *
+     * Note: There is no 'simple' equivalent of comparing datetime objects.
+     *       Only JSON like complex structures can be compared that way.
+     */
+    public function testCommandEqualsWithDates()
     {
         $query = new Query($this->store);
         $result = $query

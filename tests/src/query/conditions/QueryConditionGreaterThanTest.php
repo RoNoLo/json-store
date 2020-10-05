@@ -11,43 +11,24 @@ use RoNoLo\JsonStorage\Store\Query;
  *
  * @package RoNoLo\JsonStorage
  */
-class QueryConditionsIsEqualTest extends QueryTestBase
+class QueryConditionGreaterThanTest extends QueryTestBase
 {
     /**
      * SELECT * FROM store WHERE index = 40;
      */
-    public function testSimpleEqualsWithInt()
-    {
-        $query = new Query($this->store);
-        $result = $query
-            ->find([
-                "index" => 40,
-            ])
-            ->execute()
-        ;
-
-        $expected = 1;
-
-        $this->assertEquals($expected, $result->count());
-    }
-
-
-    /**
-     * SELECT * FROM store WHERE index = 40;
-     */
-    public function testSimpleEqualsWithIntAsSpecialCommand()
+    public function testCommandGreaterThanWithInt()
     {
         $query = new Query($this->store);
         $result = $query
             ->find([
                 "index" => [
-                    '$eq' => 40
-                ],
+                    '$gt' => 500,
+                ]
             ])
             ->execute()
         ;
 
-        $expected = 1;
+        $expected = 499;
 
         $this->assertEquals($expected, $result->count());
     }

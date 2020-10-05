@@ -4,6 +4,7 @@ namespace RoNoLo\JsonStorage\Query;
 
 class ConditionProvider
 {
+    /** All supported rules and their $-command */
     const RULES = [
         '$eq' => 'isEqual',
         '$neq' => 'isNotEqual',
@@ -51,7 +52,10 @@ class ConditionProvider
 
 
     /**
-     * Simple equals
+     * Is Equal.
+     *
+     * Type strict support for: int, float, string, datetime
+     * Everything else including stdClass objects, arrays is checked not type strict.
      *
      * @param mixed $value
      * @param mixed $comparable
@@ -73,12 +77,6 @@ class ConditionProvider
                 case is_string($comparable):
                     return (string) $value === $comparable;
 
-                case is_object($comparable) && $comparable instanceof \stdClass:
-                    return $value == $comparable;
-
-                default:
-                    return $value === $comparable;
-
                 case is_object($comparable) && $comparable instanceof \DateTime:
                     $valueDateTime = $this->toDateTime($value);
 
@@ -87,12 +85,18 @@ class ConditionProvider
                     }
 
                     return $valueDateTime == $comparable;
+
+                default:
+                    return $value == $comparable;
             }
         };
     }
 
     /**
-     * Simple not equal
+     * Is Not Equal.
+     *
+     * Type strict support for: int, float, string, datetime
+     * Everything else including stdClass objects, arrays is checked not type strict.
      *
      * @param mixed $value
      * @param mixed $comparable
@@ -114,12 +118,6 @@ class ConditionProvider
                 case is_string($comparable):
                     return (string) $value !== $comparable;
 
-                case is_object($comparable) && $comparable instanceof \stdClass:
-                    return $value != $comparable;
-
-                default:
-                    return $value !== $comparable;
-
                 case is_object($comparable) && $comparable instanceof \DateTime:
                     $valueDateTime = $this->toDateTime($value);
 
@@ -129,15 +127,18 @@ class ConditionProvider
 
                     return $valueDateTime != $comparable;
 
+                default:
+                    return $value != $comparable;
             }
         };
     }
 
     /**
-     * Strict greater than
+     * Is Greater Than
      *
      * @param mixed $value
      * @param mixed $comparable
+     *
      * @return \Closure
      */
     public function isGreaterThan($value, $comparable)
