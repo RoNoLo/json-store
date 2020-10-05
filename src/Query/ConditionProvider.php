@@ -74,7 +74,7 @@ class ConditionProvider
                 case is_float($comparable):
                     return floatval($value) === $comparable;
 
-                case is_string($comparable):
+                case is_string($comparable) && is_string($value):
                     return strcmp($value, $comparable) === 0;
 
                 case is_object($comparable) && $comparable instanceof \DateTime:
@@ -115,7 +115,7 @@ class ConditionProvider
                 case is_float($comparable):
                     return floatval($value) !== $comparable;
 
-                case is_string($comparable):
+                case is_string($comparable) && is_string($value):
                     return strcmp($value, $comparable) !== 0;
 
                 case is_object($comparable) && $comparable instanceof \DateTime:
@@ -152,7 +152,7 @@ class ConditionProvider
                 case is_float($comparable):
                     return floatval($value) > $comparable;
 
-                case is_string($comparable):
+                case is_string($comparable) && is_string($value):
                     return strcmp($value, $comparable) > 0;
 
                 default:
@@ -189,7 +189,7 @@ class ConditionProvider
                 case is_float($comparable):
                     return floatval($value) < $comparable;
 
-                case is_string($comparable):
+                case is_string($comparable) && is_string($value):
                     return strcmp($value, $comparable) < 0;
 
                 default:
@@ -226,7 +226,7 @@ class ConditionProvider
                 case is_float($comparable):
                     return floatval($value) >= $comparable;
 
-                case is_string($comparable):
+                case is_string($comparable) && is_string($value):
                     return strcmp($value, $comparable) >= 0;
 
                 default:
@@ -263,7 +263,7 @@ class ConditionProvider
                 case is_float($comparable):
                     return floatval($value) <= $comparable;
 
-                case is_string($comparable):
+                case is_string($comparable) && is_string($value):
                     return strcmp($value, $comparable) <= 0;
 
                 default:
@@ -283,6 +283,8 @@ class ConditionProvider
 
     /**
      * In array
+     * or
+     * In String
      *
      * @param mixed $value
      * @param array $comparable
@@ -293,7 +295,15 @@ class ConditionProvider
     {
         return function () use ($value, $comparable)
         {
-            return (is_array($comparable) && in_array($value, $comparable));
+            switch (true) {
+                case is_array($comparable):
+                    return in_array($value, $comparable);
+
+                case is_string($comparable) && is_string($value):
+                    return strpos($comparable, $value) !== false;
+            }
+
+            return false;
         };
     }
 
