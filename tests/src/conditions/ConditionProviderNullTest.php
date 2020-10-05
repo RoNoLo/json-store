@@ -17,7 +17,7 @@ class ConditionProviderNullTest extends TestBase
     {
         $conditionExecutor = new ConditionProvider();
 
-        $condition = $conditionExecutor->isNull($value);
+        $condition = $conditionExecutor->isNull($value, true);
 
         $result = $condition();
 

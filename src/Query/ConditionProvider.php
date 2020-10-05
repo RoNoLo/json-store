@@ -345,43 +345,6 @@ class ConditionProvider
     }
 
     /**
-     * Is Not Null
-     *
-     * @param mixed $value
-     * @param bool $comparable
-     *
-     * @return \Closure
-     */
-    public function isNotNull($value, bool $comparable)
-    {
-        return function () use ($value, $comparable)
-        {
-            return !is_null($value);
-        };
-    }
-
-    /**
-     * Is not empty string.
-     *
-     * @param mixed $value
-     *
-     * @return \Closure
-     */
-    public function isNotEmpty($value)
-    {
-        return function () use ($value)
-        {
-            if (is_array($value)) {
-                return count($value) !== 0;
-            } elseif (is_string($value)) {
-                return trim($value) !== '';
-            }
-
-            return true;
-        };
-    }
-
-    /**
      * Is empty string or empty array.
      *
      * @param mixed $value
@@ -399,7 +362,7 @@ class ConditionProvider
                 return $comparable ? trim($value) === '' : trim($value) !== '';
             }
 
-            return false;
+            return $comparable ? false : true;
         };
     }
 

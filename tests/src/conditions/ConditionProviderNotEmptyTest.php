@@ -17,7 +17,7 @@ class ConditionProviderNotEmptyTest extends TestBase
     {
         $conditionExecutor = new ConditionProvider();
 
-        $condition = $conditionExecutor->isNotEmpty($value);
+        $condition = $conditionExecutor->isEmpty($value, false);
 
         $result = $condition();
 
