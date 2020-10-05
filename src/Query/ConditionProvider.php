@@ -75,7 +75,7 @@ class ConditionProvider
                     return floatval($value) === $comparable;
 
                 case is_string($comparable):
-                    return (string) $value === $comparable;
+                    return strcmp($value, $comparable) === 0;
 
                 case is_object($comparable) && $comparable instanceof \DateTime:
                     $valueDateTime = $this->toDateTime($value);
@@ -116,7 +116,7 @@ class ConditionProvider
                     return floatval($value) !== $comparable;
 
                 case is_string($comparable):
-                    return (string) $value !== $comparable;
+                    return strcmp($value, $comparable) !== 0;
 
                 case is_object($comparable) && $comparable instanceof \DateTime:
                     $valueDateTime = $this->toDateTime($value);
@@ -153,7 +153,7 @@ class ConditionProvider
                     return floatval($value) > $comparable;
 
                 case is_string($comparable):
-                    return (string) $value > $comparable;
+                    return strcmp($value, $comparable) > 0;
 
                 default:
                     return $value > $comparable;

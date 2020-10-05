@@ -74,7 +74,7 @@ class QueryConditionIsNotEqualTest extends QueryTestBase
     }
 
     /**
-     * SELECT * FROM store WHERE name != { first: "Morales", last: "levy" };
+     * SELECT * FROM store WHERE name != { first: "Morales", last: "Levy" };
      */
     public function testCommandEqualsWithObject()
     {

@@ -128,7 +128,7 @@ class QueryConditionIsEqualTest extends QueryTestBase
     }
 
     /**
-     * SELECT * FROM store WHERE name = { first: "Morales", last: "levy" };
+     * SELECT * FROM store WHERE name = { first: "Morales", last: "Levy" };
      */
     public function testSimpleEqualsWithObject()
     {
@@ -149,7 +149,7 @@ class QueryConditionIsEqualTest extends QueryTestBase
     }
 
     /**
-     * SELECT * FROM store WHERE name = { first: "Morales", last: "levy" };
+     * SELECT * FROM store WHERE name = { first: "Morales", last: "Levy" };
      */
     public function testCommandEqualsWithObject()
     {

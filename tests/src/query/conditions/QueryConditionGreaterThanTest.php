@@ -34,39 +34,21 @@ class QueryConditionGreaterThanTest extends QueryTestBase
     }
 
     /**
-     * SELECT * FROM store WHERE eyeColor = "green";
+     * SELECT * FROM store WHERE eyeColor > "Green";
      */
-    public function testSimpleEqualsWithString()
-    {
-        $query = new Query($this->store);
-        $result = $query
-            ->find([
-                "eyeColor" => "green",
-            ])
-            ->execute()
-        ;
-
-        $expected = 338;
-
-        $this->assertEquals($expected, $result->count());
-    }
-
-    /**
-     * SELECT * FROM store WHERE eyeColor = "green";
-     */
-    public function testSimpleEqualsWithStringAsSpecialCommand()
+    public function testCommandGreaterThanWithString()
     {
         $query = new Query($this->store);
         $result = $query
             ->find([
                 "eyeColor" => [
-                    '$eq' => "green",
+                    '$eq' => "Green",
                 ]
             ])
             ->execute()
         ;
 
-        $expected = 338;
+        $expected = 0;
 
         $this->assertEquals($expected, $result->count());
     }
@@ -74,64 +56,29 @@ class QueryConditionGreaterThanTest extends QueryTestBase
     /**
      * SELECT * FROM store WHERE balance = 1086.98;
      */
-    public function testSimpleEqualsWithFloat()
-    {
-        $query = new Query($this->store);
-        $result = $query
-            ->find([
-                "balance" => 1086.98,
-            ])
-            ->execute()
-        ;
-
-        $expected = 1;
-
-        $this->assertEquals($expected, $result->count());
-    }
-
-    /**
-     * SELECT * FROM store WHERE balance = 1086.98;
-     */
-    public function testSimpleEqualsWithFloatAsSpecialCommand()
+    public function testCommandGreaterThanWithFloat()
     {
         $query = new Query($this->store);
         $result = $query
             ->find([
                 "balance" => [
-                    '$eq' => 1086.98
+                    '$gt' => 3000.98,
                 ]
             ])
             ->execute()
         ;
 
-        $expected = 1;
+        $expected = 345;
 
         $this->assertEquals($expected, $result->count());
     }
 
     /**
-     * SELECT * FROM store WHERE name = { first: "Morales", last: "levy" };
-     */
-    public function testSimpleEqualsWithObject()
-    {
-        $query = new Query($this->store);
-        $result = $query
-            ->find([
-                "name" => (object) [
-                    "first" => "Morales",
-                    "last" => "Levy"
-                ],
-            ])
-            ->execute()
-        ;
-
-        $expected = 1;
-
-        $this->assertEquals($expected, $result->count());
-    }
-
-    /**
-     * SELECT * FROM store WHERE name = { first: "Morales", last: "levy" };
+     * SELECT * FROM store WHERE name > { first: "Morales", last: "Levy" };
+     *
+     * Note: it is up to PHP to decide what $value > $comparable for example
+     *       { first: "Emma", last: "John" } > { first: "Morales", last: "Levy" }
+     *       is as a boolean result.
      */
     public function testSimpleEqualsWithObjectAsSpecialCommand()
     {
@@ -139,7 +86,7 @@ class QueryConditionGreaterThanTest extends QueryTestBase
         $result = $query
             ->find([
                 "name" => [
-                    '$eq' => (object) [
+                    '$gt' => (object) [
                         "first" => "Morales",
                         "last" => "Levy"
                     ],
@@ -148,27 +95,27 @@ class QueryConditionGreaterThanTest extends QueryTestBase
             ->execute()
         ;
 
-        $expected = 1;
+        $expected = 325;
 
         $this->assertEquals($expected, $result->count());
     }
 
     /**
-     * SELECT * FROM store WHERE registered = "2009-07-01T09:50:13";
+     * SELECT * FROM store WHERE registered > "2009-07-01T09:50:13";
      */
-    public function testSimpleEqualsWithDatesAsSpecialCommand()
+    public function testCommandWithDates()
     {
         $query = new Query($this->store);
         $result = $query
             ->find([
                 "registered" => [
-                    '$eq' => new \DateTime("2009-07-01T09:50:13"),
+                    '$gt' => new \DateTime("2009-08-01T09:50:13"),
                 ]
             ])
             ->execute()
         ;
 
-        $expected = 1;
+        $expected = 387;
 
         $this->assertEquals($expected, $result->count());
     }
