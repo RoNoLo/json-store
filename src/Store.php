@@ -64,7 +64,9 @@ class Store
         if (count($this->index)) {
             $this->flysystem->put(self::STORE_INDEX_FILE, json_encode($this->index));
         } else {
-            $this->flysystem->delete(self::STORE_INDEX_FILE);
+            if ($this->flysystem->has(self::STORE_INDEX_FILE)) {
+                $this->flysystem->delete(self::STORE_INDEX_FILE);
+            }
         }
     }
 
