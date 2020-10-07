@@ -86,7 +86,7 @@ class QueryConditionLessThanTest extends QueryTestBase
      *       { first: "Emma", last: "John" } < { first: "Morales", last: "Levy" }
      *       is as a boolean result.
      */
-    public function testCommandEqualsWithObject()
+    public function testCommandLessThanWithObject()
     {
         $query = new Query($this->store);
         $result = $query
@@ -109,7 +109,7 @@ class QueryConditionLessThanTest extends QueryTestBase
     /**
      * SELECT * FROM store WHERE registered < "2009-08-01T09:50:13";
      */
-    public function testCommandWithDates()
+    public function testCommandLessThanWithDates()
     {
         $query = new Query($this->store);
         $result = $query

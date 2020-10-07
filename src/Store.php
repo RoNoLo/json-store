@@ -57,6 +57,11 @@ class Store
         $this->index = json_decode($indexJson, true);
     }
 
+    /**
+     * This saves the index to the flysystem.
+     *
+     * @throws FileNotFoundException
+     */
     public function __destruct()
     {
         if (count($this->index)) {
@@ -218,6 +223,25 @@ class Store
             }
 
             $this->flysystem->delete($this->getPathForDocument($id));
+
+            // Directory cleanup
+            $documentDirectory = $this->getPathForDocument($id, 2);
+
+            $contents = $this->flysystem->listContents($documentDirectory);
+
+            if (count($contents)) {
+                return;
+            }
+
+            $this->flysystem->deleteDir($documentDirectory);
+
+            $documentGroupDirectory = $this->getPathForDocument($id, 1);
+
+            $contents = $this->flysystem->listContents($documentGroupDirectory);
+
+            if (!count($contents)) {
+                $this->flysystem->deleteDir($documentGroupDirectory);
+            }
         } catch (FileNotFoundException $e) {
             ;
         }
@@ -299,12 +323,25 @@ class Store
      * Get the filesystem path for a document based on it's ID.
      *
      * @param string $id The ID of the document.
+     * @param int $parts For internal reasons, this will limit the return value.
      *
      * @return string The full filesystem path of the document.
      */
-    protected function getPathForDocument(string $id): string
+    protected function getPathForDocument(string $id, $parts = 3): string
     {
-        return substr($id, 0, 1) . '/' . substr($id, 0, 2) . '/' . $id . '.json';
+        $first = substr($id, 0, 1);
+        $second = substr($id, 0, 2);
+        $filename = $id . '.json';
+
+        switch ($parts) {
+            default:
+            case 3:
+                return $first . '/' . $second . '/' . $filename;
+            case 2:
+                return $first . '/' . $second;
+            case 1:
+                return $first;
+        }
     }
 
     /**

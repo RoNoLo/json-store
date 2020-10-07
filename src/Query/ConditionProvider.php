@@ -2,6 +2,8 @@
 
 namespace RoNoLo\JsonStorage\Query;
 
+use Cassandra\Date;
+
 class ConditionProvider
 {
     /** All supported rules and their $-command */
@@ -463,6 +465,7 @@ class ConditionProvider
 
     /**
      * @param mixed $value
+     *
      * @return \DateTime|null
      * @throws \Exception
      */
@@ -470,6 +473,10 @@ class ConditionProvider
     {
         if (is_object($value) && $value instanceof \DateTime) {
             return $value;
+        } elseif (is_object($value) && $value instanceof \stdClass && isset($value->date) && isset($value->timezone_type) && isset($value->timezone)) {
+            $dateTime = (new \DateTime($value->date, new \DateTimeZone($value->timezone)));
+
+            return $dateTime ? $dateTime : null;
         } elseif (is_string($value)) {
             $dateTime = date_create($value);
 

@@ -2,6 +2,7 @@
 
 namespace RoNoLo\JsonStorage;
 
+use League\Flysystem\Adapter\Local;
 use League\Flysystem\Memory\MemoryAdapter;
 use RoNoLo\JsonStorage\Store\Config;
 
@@ -131,5 +132,28 @@ class StoreTest extends TestBase
         foreach ($result as $id => $document) {
             $tmp = $document['slug'];
         }
+    }
+
+    /**
+     * This test will check if empty directories are also deleted, if
+     * a document is removed.
+     */
+    public function testRemoveDirectoryCleanUp()
+    {
+        $store = Store::create((new Config())->setAdapter(new Local($this->datastorePath . '/something')));
+
+        $data = [];
+        for ($i = 0; $i < 50; $i++) {
+            $data[] = [
+                'id' => $i,
+                'slug' => '123',
+                'body' => 'THIS IS BODY TEXT',
+                'random' => rand(100, 20000)
+            ];
+        }
+
+        $ids = $store->putMany($data);
+
+        $store->removeMany($ids);
     }
 }
