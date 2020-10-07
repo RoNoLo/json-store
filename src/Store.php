@@ -2,15 +2,15 @@
 
 namespace RoNoLo\JsonStorage;
 
-use League\Flysystem\{AdapterInterface, FileNotFoundException, Filesystem};
+use League\Flysystem\{FileNotFoundException, Filesystem};
 use RoNoLo\JsonStorage\Exception\{DocumentNotFoundException, DocumentNotStoredException};
-use RoNoLo\JsonStorage\Store\Config;
 use RoNoLo\JsonStorage\Store\DocumentIterator;
+use RoNoLo\JsonStorage\Store\StoreConfig;
 
 /**
  * Store
  *
- * Analageous to a table in a traditional RDBMS, a store is a collection where documents live.
+ * Analogous to a table in a traditional RDBMS, a store is a collection where documents live.
  */
 class Store
 {
@@ -19,36 +19,34 @@ class Store
     /** @var Filesystem */
     protected $flysystem;
 
-    /** @var array */
-    protected $options = [];
+    /** @var StoreConfig */
+    protected $config;
 
     /** @var array */
     protected $index = [];
 
     /**
-     * @param Config $config
+     * @param StoreConfig $config
      *
      * @return static
      *
      * @throws FileNotFoundException
      */
-    public static function create(Config $config)
+    public static function create(StoreConfig $config)
     {
-        return new static($config->getAdapter(), $config->getOptions());
+        return new static($config);
     }
 
     /**
      * Constructor
      *
-     * @param AdapterInterface $adapter
-     * @param array $options
+     * @param StoreConfig $config
      *
      * @throws FileNotFoundException
      */
-    protected function __construct(AdapterInterface $adapter, array $options = [])
+    protected function __construct(StoreConfig $config)
     {
-        $this->options = [] + $options;
-        $this->flysystem = new Filesystem($adapter);
+        $this->flysystem = new Filesystem($config->getAdapter());
 
         // Init or rebuild the Index.
         if (!$this->flysystem->has(self::STORE_INDEX_FILE)) {
@@ -175,9 +173,7 @@ class Store
                 return $json;
             }
 
-            $document = json_decode($json, !!$assoc);
-
-            return $document;
+            return json_decode($json, !!$assoc);
         }
         catch (FileNotFoundException $e) {
             throw new DocumentNotFoundException(sprintf("Document with id `%s` not found.", $id), 0, $e);

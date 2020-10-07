@@ -4,12 +4,10 @@ namespace RoNoLo\JsonStorage\Store;
 
 use League\Flysystem\AdapterInterface;
 
-class Config
+class Config implements StoreConfig
 {
     /** @var AdapterInterface */
     private $adapter;
-
-    private $options = [];
 
     public function setAdapter(AdapterInterface $adapter)
     {
@@ -21,17 +19,5 @@ class Config
     public function getAdapter(): AdapterInterface
     {
         return $this->adapter;
-    }
-
-    public function setOption(string $name, $value)
-    {
-        $this->options[$name] = $value;
-
-        return $this;
-    }
-
-    public function getOptions(): array
-    {
-        return $this->options;
     }
 }
