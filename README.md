@@ -9,6 +9,9 @@ everything into one store or have many stores for different JSON objects.
 It uses a NoSQL like query system for the documents and aims to use very low 
 memory footprint (aka not loading all documents into memory to process them).
 
+Note: There is a ronolo/json-database package, which uses the json-store and
+extends it with document relations (foreign keys) and query result caching. 
+
 ## Usage
 
 First create a Config object.
