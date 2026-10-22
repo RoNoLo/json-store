@@ -2,16 +2,16 @@
 
 namespace RoNoLo\JsonStorage;
 
-use League\Flysystem\Adapter\Local;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\Filesystem;
 
 class Store99WorkflowEndTest extends StoreWorkflowTestBase
 {
     public function testRemoveDirectory()
     {
-        $adapter = new Local($this->datastorePath);
+        $adapter = new LocalFilesystemAdapter($this->datastorePath);
         $flysystem = new Filesystem($adapter);
-        $flysystem->deleteDir($this->repoTestPath);
+        $flysystem->deleteDirectory($this->repoTestPath);
 
         $this->assertFalse($flysystem->has($this->repoTestPath));
 

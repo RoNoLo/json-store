@@ -24,10 +24,10 @@ correct parameters.
 ```php
 // First create the config object
 $config = new Store\Config();
-// Set the the adapter
-$config->setAdapter(new Local('some/path/persons'));
+// Set the adapter
+$config->setAdapter(new League\Flysystem\Local\LocalFilesystemAdapter('some/path/persons'));
 // Secondly create the JsonDB
-$store = new Store($config);
+$store = Store::create($config);
 ```
 
 The store is now ready. We can now store, read, delete and update documents. As a very
@@ -144,7 +144,7 @@ $result = $query
 ## Goals
 
 - No real database needed like SqlLite, Mysql, MongoDB, CouchDB ...)
-- PHP 7.2+
+- PHP 8.3+
 - Document Store aka NoSQL
 - JSON as format of storage
 - (very) low memory usage even for huge results

@@ -2,15 +2,15 @@
 
 namespace RoNoLo\JsonStorage;
 
-use League\Flysystem\Adapter\Local;
-use League\Flysystem\Memory\MemoryAdapter;
+use League\Flysystem\Local\LocalFilesystemAdapter;
+use League\Flysystem\InMemory\InMemoryFilesystemAdapter;
 use RoNoLo\JsonStorage\Store\Config;
 
 class StoreTest extends TestBase
 {
     public function testPutDocuments()
     {
-        $store = Store::create((new Config())->setAdapter(new MemoryAdapter()));
+        $store = Store::create((new Config())->setAdapter(new InMemoryFilesystemAdapter()));
 
         for ($i = 0; $i < 5; $i++) {
             $data = [
@@ -27,7 +27,7 @@ class StoreTest extends TestBase
 
     public function testPutManyDocuments()
     {
-        $store = Store::create((new Config())->setAdapter(new MemoryAdapter()));
+        $store = Store::create((new Config())->setAdapter(new InMemoryFilesystemAdapter()));
 
         $data = [];
         for ($i = 0; $i < 5; $i++) {
@@ -45,7 +45,7 @@ class StoreTest extends TestBase
 
     public function testReadDocument()
     {
-        $store = Store::create((new Config())->setAdapter(new MemoryAdapter()));
+        $store = Store::create((new Config())->setAdapter(new InMemoryFilesystemAdapter()));
 
         $data = [
             'slug' => '123',
@@ -75,7 +75,7 @@ class StoreTest extends TestBase
      */
     public function testReadManyDocumentWithoutCheck()
     {
-        $store = Store::create((new Config())->setAdapter(new MemoryAdapter()));
+        $store = Store::create((new Config())->setAdapter(new InMemoryFilesystemAdapter()));
 
         $data = [];
         for ($i = 0; $i < 5; $i++) {
@@ -108,7 +108,7 @@ class StoreTest extends TestBase
      */
     public function testReadManyDocumentWithCheck()
     {
-        $store = Store::create((new Config())->setAdapter(new MemoryAdapter()));
+        $store = Store::create((new Config())->setAdapter(new InMemoryFilesystemAdapter()));
 
         $data = [];
         for ($i = 0; $i < 5; $i++) {
@@ -140,7 +140,7 @@ class StoreTest extends TestBase
      */
     public function testRemoveDirectoryCleanUp()
     {
-        $store = Store::create((new Config())->setAdapter(new Local($this->datastorePath . '/something')));
+        $store = Store::create((new Config())->setAdapter(new LocalFilesystemAdapter($this->datastorePath . '/something')));
 
         $data = [];
         for ($i = 0; $i < 50; $i++) {
@@ -155,5 +155,7 @@ class StoreTest extends TestBase
         $ids = $store->putMany($data);
 
         $store->removeMany($ids);
+
+        $this->assertEquals(0, $store->count());
     }
 }

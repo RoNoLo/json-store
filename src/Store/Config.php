@@ -2,21 +2,20 @@
 
 namespace RoNoLo\JsonStorage\Store;
 
-use League\Flysystem\AdapterInterface;
+use League\Flysystem\FilesystemAdapter;
 
 class Config implements StoreConfig
 {
-    /** @var AdapterInterface */
-    private $adapter;
+    private FilesystemAdapter $adapter;
 
-    public function setAdapter(AdapterInterface $adapter)
+    public function setAdapter(FilesystemAdapter $adapter): self
     {
         $this->adapter = $adapter;
 
         return $this;
     }
 
-    public function getAdapter(): AdapterInterface
+    public function getAdapter(): FilesystemAdapter
     {
         return $this->adapter;
     }

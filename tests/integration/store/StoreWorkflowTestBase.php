@@ -2,7 +2,7 @@
 
 namespace RoNoLo\JsonStorage;
 
-use League\Flysystem\Adapter\Local;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 
 abstract class StoreWorkflowTestBase extends TestBase
 {
@@ -15,11 +15,13 @@ abstract class StoreWorkflowTestBase extends TestBase
 
     protected function setUp(): void
     {
-        $this->documents_amount = require_once __DIR__ . DIRECTORY_SEPARATOR . 'setup.php';
+        parent::setUp();
+
+        $this->documents_amount = require __DIR__ . DIRECTORY_SEPARATOR . 'setup.php';
 
         $this->repoTestPath = 'store_workflow';
 
-        $datastoreAdapter = new Local($this->datastorePath . '/' . $this->repoTestPath);
+        $datastoreAdapter = new LocalFilesystemAdapter($this->datastorePath . '/' . $this->repoTestPath);
 
         $storeConfig = new Store\Config();
         $storeConfig->setAdapter($datastoreAdapter);

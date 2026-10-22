@@ -11,23 +11,15 @@ use RoNoLo\JsonStorage\Exception\{DocumentNotFoundException, ResultSetException}
  */
 abstract class Result implements \IteratorAggregate, \ArrayAccess, \JsonSerializable, \Countable
 {
-    protected $ids;
+    protected array $ids;
 
-    protected $total;
+    protected int $total;
 
-    protected $assoc = false;
+    protected bool $assoc = false;
 
-    protected $fields = [];
+    protected array $fields = [];
 
-    /**
-     * Constructor
-     *
-     * @param array $ids
-     * @param array $fields
-     * @param int $total
-     * @param bool $assoc
-     */
-    public function __construct(array $ids = [], array $fields = [], int $total = 0,  bool $assoc = false)
+    public function __construct(array $ids = [], array $fields = [], int $total = 0, bool $assoc = false)
     {
         $this->ids = $ids;
         $this->total = $total;
@@ -37,8 +29,6 @@ abstract class Result implements \IteratorAggregate, \ArrayAccess, \JsonSerializ
 
     /**
      * How many documents are in the ResultSet.
-     *
-     * @return int
      */
     public function count(): int
     {
@@ -47,8 +37,6 @@ abstract class Result implements \IteratorAggregate, \ArrayAccess, \JsonSerializ
 
     /**
      * How many documents were there (before limit or skip was apply'ed)
-     *
-     * @return int
      */
     public function total(): int
     {
@@ -58,40 +46,38 @@ abstract class Result implements \IteratorAggregate, \ArrayAccess, \JsonSerializ
     /**
      * Returns an document with an ID from the result set.
      *
-     * @param string $id
-     * @return array|\stdClass
      * @throws DocumentNotFoundException
      */
-    abstract public function document($id);
+    abstract public function document(string $id): array|\stdClass;
 
     /** @return DocumentIterator */
+    #[\ReturnTypeWillChange]
     abstract public function getIterator();
 
+    #[\ReturnTypeWillChange]
     abstract public function offsetGet($offset);
 
-    /**
-     * @return array
-     */
-    public function getIds()
+    public function getIds(): array
     {
         return $this->ids;
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->ids[$offset]);
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         throw new ResultSetException("It is not possible to write to the result set.");
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->ids[$offset]);
     }
 
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return [

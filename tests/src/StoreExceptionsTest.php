@@ -3,10 +3,9 @@
 namespace RoNoLo\JsonStorage;
 
 use Exception;
-use League\Flysystem\Adapter\Local;
-use League\Flysystem\Adapter\NullAdapter;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\Filesystem;
-use League\Flysystem\Memory\MemoryAdapter;
+use League\Flysystem\InMemory\InMemoryFilesystemAdapter;
 use RoNoLo\JsonStorage\Exception\DocumentNotFoundException;
 use RoNoLo\JsonStorage\Exception\DocumentNotStoredException;
 use RoNoLo\JsonStorage\Store\Config;
@@ -15,7 +14,7 @@ class StoreExceptionsTest extends TestBase
 {
     public function testPutWillThrowExceptionWhenStoringArray()
     {
-        $store = Store::create((new Config())->setAdapter(new MemoryAdapter()));
+        $store = Store::create((new Config())->setAdapter(new InMemoryFilesystemAdapter()));
 
         $this->expectException(DocumentNotStoredException::class);
         $this->expectExceptionMessage("Your data was not an single object. (Maybe an array, you may use ->putMany() instead.)");
@@ -31,7 +30,7 @@ class StoreExceptionsTest extends TestBase
 
     public function testPutManyWillThrowExceptionWhenStoringObject()
     {
-        $store = Store::create((new Config())->setAdapter(new MemoryAdapter()));
+        $store = Store::create((new Config())->setAdapter(new InMemoryFilesystemAdapter()));
 
         $this->expectException(DocumentNotStoredException::class);
         $this->expectExceptionMessage("Your data was not an array of objects. (To store objects use ->put() instead.)");
@@ -47,7 +46,7 @@ class StoreExceptionsTest extends TestBase
 
     public function testReadWillThrowExceptionWhenReadNonExistingDocument()
     {
-        $store = Store::create((new Config())->setAdapter(new MemoryAdapter()));
+        $store = Store::create((new Config())->setAdapter(new InMemoryFilesystemAdapter()));
 
         $this->expectException(DocumentNotFoundException::class);
         $this->expectExceptionMessage("Document with id `123456` not found.");

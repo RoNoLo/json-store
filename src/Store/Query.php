@@ -15,15 +15,14 @@ use RoNoLo\JsonStorage\Query as AbstractQuery;
  */
 class Query extends AbstractQuery
 {
-    /** @var Store */
-    protected $store;
+    protected Store $store;
 
     public function __construct(Store $store)
     {
         $this->store = $store;
     }
 
-    public function execute($assoc = false)
+    public function execute(bool $assoc = false): Result
     {
         $ids = [];
         foreach ($this->store->documentsGenerator() as $documentJson) {

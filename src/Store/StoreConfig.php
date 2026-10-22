@@ -2,11 +2,11 @@
 
 namespace RoNoLo\JsonStorage\Store;
 
-use League\Flysystem\AdapterInterface;
+use League\Flysystem\FilesystemAdapter;
 
 interface StoreConfig
 {
-    public function setAdapter(AdapterInterface $adapter);
+    public function setAdapter(FilesystemAdapter $adapter);
 
-    public function getAdapter(): AdapterInterface;
+    public function getAdapter(): FilesystemAdapter;
 }

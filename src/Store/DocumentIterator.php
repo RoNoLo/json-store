@@ -8,18 +8,9 @@ use RoNoLo\JsonStorage\DocumentIterator as AbstractDocumentIterator;
 
 class DocumentIterator extends AbstractDocumentIterator
 {
-    /** @var Store */
-    private $store;
+    private Store $store;
 
-    /**
-     * DocumentIterator constructor.
-     *
-     * @param Store $store
-     * @param array $ids
-     * @param array $fields
-     * @param bool $assoc
-     */
-    public function __construct(Store $store, array &$ids, array $fields = [], $assoc = false)
+    public function __construct(Store $store, array &$ids, array $fields = [], bool $assoc = false)
     {
         $this->store = $store;
 
@@ -29,6 +20,7 @@ class DocumentIterator extends AbstractDocumentIterator
     /**
      * Return the current element
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         $document = $this->store->read($this->ids[$this->idx], false);

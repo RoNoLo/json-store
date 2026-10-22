@@ -17,10 +17,9 @@ use RoNoLo\JsonStorage\Store;
  */
 class Result extends AbstractResult
 {
-    /** @var Store */
-    protected $store;
+    protected Store $store;
 
-    public static function fromJson(Store $store, array $data = [])
+    public static function fromJson(Store $store, array $data = []): static
     {
         // Setup defaults
         $data += [
@@ -38,16 +37,7 @@ class Result extends AbstractResult
         return new self($store, $ids, $fields, $total, $assoc);
     }
 
-    /**
-     * Constructor
-     *
-     * @param Store $store
-     * @param array $ids
-     * @param array $fields
-     * @param int $total
-     * @param bool $assoc
-     */
-    protected function __construct(Store $store, array $ids = [], array $fields = [], int $total = 0,  bool $assoc = false)
+    protected function __construct(Store $store, array $ids = [], array $fields = [], int $total = 0, bool $assoc = false)
     {
         $this->store = $store;
 
@@ -56,8 +46,6 @@ class Result extends AbstractResult
 
     /**
      * How many documents are in the ResultSet.
-     *
-     * @return int
      */
     public function count(): int
     {
@@ -66,8 +54,6 @@ class Result extends AbstractResult
 
     /**
      * How many documents were there (before limit or skip was apply'ed)
-     *
-     * @return int
      */
     public function total(): int
     {
@@ -77,11 +63,9 @@ class Result extends AbstractResult
     /**
      * Returns an document with an ID from the result set.
      *
-     * @param string $id
-     * @return array|\stdClass
      * @throws DocumentNotFoundException
      */
-    public function document($id)
+    public function document(string $id): array|\stdClass
     {
         if (!in_array($id, $this->ids)) {
             throw new DocumentNotFoundException("No documentwith ID " . $id . " was found in result set.");
@@ -91,37 +75,36 @@ class Result extends AbstractResult
         return (new DocumentIterator($this->store, $id, $this->fields, $this->assoc))->current();
     }
 
-    /**
-     * @return array
-     */
-    public function getIds()
+    public function getIds(): array
     {
         return $this->ids;
     }
 
     /** @return DocumentIterator */
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         return new DocumentIterator($this->store, $this->ids, $this->fields, $this->assoc);
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->ids[$offset]);
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         $id = [$this->ids[$offset]];
         return (new DocumentIterator($this->store, $id, $this->fields, $this->assoc))->current();
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         throw new ResultSetException("It is not possible to write to the result set.");
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->ids[$offset]);
     }

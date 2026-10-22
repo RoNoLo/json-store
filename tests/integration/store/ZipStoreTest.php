@@ -2,6 +2,7 @@
 
 namespace RoNoLo\JsonStorage;
 
+use League\Flysystem\ZipArchive\FilesystemZipArchiveProvider;
 use League\Flysystem\ZipArchive\ZipArchiveAdapter;
 use RoNoLo\JsonStorage\Store\Config;
 use RoNoLo\JsonStorage\Store\Query;
@@ -14,7 +15,11 @@ class ZipStoreTest extends StoreTestBase
 
     protected function setUp(): void
     {
-        $this->datastoreAdapter = new ZipArchiveAdapter($this->datastorePath . DIRECTORY_SEPARATOR . $this->repoTestFile);
+        parent::setUp();
+
+        $this->datastoreAdapter = new ZipArchiveAdapter(
+            new FilesystemZipArchiveProvider($this->datastorePath . DIRECTORY_SEPARATOR . $this->repoTestFile)
+        );
     }
 
     public function testAddingWritingFindingFromZipArchiveRepository()
@@ -66,11 +71,11 @@ class ZipStoreTest extends StoreTestBase
 
     protected function tearDown(): void
     {
-        $this->datastoreAdapter->getArchive()->close();
-
         if (file_exists($this->datastorePath . DIRECTORY_SEPARATOR . $this->repoTestFile)) {
             unlink($this->datastorePath . DIRECTORY_SEPARATOR . $this->repoTestFile);
         }
+
+        parent::tearDown();
     }
 }
 

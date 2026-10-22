@@ -18,7 +18,7 @@ use RoNoLo\JsonStorage\Store\Query;
  * @package RoNoLo\JsonStorage
  */
 
-class QueryConditionGreaterThanOrEqualOrEqualTest extends QueryTestBase
+class QueryConditionGreaterThanOrEqualTest extends QueryTestBase
 {
     /**
      * SELECT * FROM store WHERE index >= 500;

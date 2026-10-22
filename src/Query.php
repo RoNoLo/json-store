@@ -13,22 +13,17 @@ use RoNoLo\JsonStorage\Query\QueryExecuter;
  */
 abstract class Query
 {
-    /** @var \Closure */
-    protected $conditions = [];
+    protected ?\Closure $conditions = null;
 
-    /** @var array */
-    protected $fields = [];
+    protected array $fields = [];
 
-    /** @var int */
-    protected $skip = 0;
+    protected int $skip = 0;
 
-    /** @var int */
-    protected $limit = PHP_INT_MAX;
+    protected int $limit = PHP_INT_MAX;
 
-    /** @var null */
-    protected $sort = null;
+    protected ?array $sort = null;
 
-    public function find(array $input)
+    public function find(array $input): static
     {
         $this->parseInput($input);
 
@@ -47,12 +42,8 @@ abstract class Query
      * ->fields(["to" => "from.here", "bernd" => "foo.moo.boo"]);
      * To KEEP only specific keys:
      * ->fields(["name", "age", "color"]);
-     *
-     * @param array $fields
-     *
-     * @return $this|array
      */
-    public function fields(array $fields)
+    public function fields(array $fields): static
     {
         $this->fields = $fields;
 
@@ -61,47 +52,40 @@ abstract class Query
 
     /**
      * Sets the field to sort by and direction.
-     *
-     * @param string $field
-     * @param string $direction
-     *
-     * @return $this
      */
-    public function sort(string $field = null, $direction = "asc")
+    public function sort(?string $field = null, string $direction = "asc"): static
     {
         $this->sort = [$field => $direction];
 
         return $this;
     }
 
-    public function limit(int $limit)
+    public function limit(int $limit): static
     {
         $this->limit = $limit;
 
         return $this;
     }
 
-    public function skip(int $skip)
+    public function skip(int $skip): static
     {
         $this->skip = $skip;
 
         return $this;
     }
 
-    public function match(JsonQuery $jsonQuery)
+    public function match(JsonQuery $jsonQuery): bool
     {
         return ($this->conditions)($jsonQuery);
     }
 
-    abstract public function execute($assoc = false);
+    abstract public function execute(bool $assoc = false);
 
     /**
      * Parsing the given JSON like query into an execution tree
      * of Closures.
-     *
-     * @param array $conditions
      */
-    protected function parseInput(array $conditions)
+    protected function parseInput(array $conditions): void
     {
         $this->conditions = (new QueryExecuter())->parse($conditions);
     }

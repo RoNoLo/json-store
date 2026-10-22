@@ -28,7 +28,7 @@ class QueryExecuter
         return $this->parseSelectors($query);
     }
 
-    protected function parseSelectors($selectors): \Closure
+    protected function parseSelectors(mixed $selectors): \Closure
     {
         // Do we have AND condition?
         if ($this->isJsonObject($selectors)) {
@@ -43,7 +43,7 @@ class QueryExecuter
         return $conditions;
     }
 
-    private function parseOperator(string $operator, $selectors)
+    private function parseOperator(string $operator, mixed $selectors): \Closure
     {
         switch ($operator) {
             case self::OP_NOT:
@@ -60,7 +60,7 @@ class QueryExecuter
         }
     }
 
-    private function parseNotCondition($selectors)
+    private function parseNotCondition(mixed $selectors): \Closure
     {
         $conditions = $this->parseSelectors($selectors);
 
@@ -69,7 +69,7 @@ class QueryExecuter
         };
     }
 
-    private function parseAndCondition(array $selectors)
+    private function parseAndCondition(array $selectors): \Closure
     {
         $list = [];
         foreach ($selectors as $mixed => $args) {
@@ -115,7 +115,7 @@ class QueryExecuter
         };
     }
 
-    private function parseOrCondition($selectors)
+    private function parseOrCondition(array $selectors): \Closure
     {
         $list = [];
         foreach ($selectors as $condition) {
@@ -138,20 +138,20 @@ class QueryExecuter
         return $orClosure;
     }
 
-    private function isOperator(string $op)
+    private function isOperator(string $op): bool
     {
         if (strpos($op, '$') !== 0) {
             return false;
         }
 
-        if (in_array($op, array_keys(self::OPERATORS))) {
+        if (in_array($op, self::OPERATORS, true)) {
             return true;
         }
 
         throw new QuerySyntaxException(sprintf("Unknown $-Operator `%s` found.", $op));
     }
 
-    private function isField($field)
+    private function isField(mixed $field): bool
     {
         if (!is_string($field)) {
             return false;
@@ -167,12 +167,8 @@ class QueryExecuter
     /**
      * An AND syntax is defined by the first array key.
      * If it is a string, it's an AND syntax.
-     *
-     * @param $selectors
-     *
-     * @return bool
      */
-    private function isJsonObject($selectors)
+    private function isJsonObject(mixed $selectors): bool
     {
         return is_array($selectors) && is_string(key($selectors));
     }
@@ -180,12 +176,8 @@ class QueryExecuter
     /**
      * An OR syntax is defined by the first array key.
      * If it is an int, it's an OR syntax.
-     *
-     * @param $selectors
-     *
-     * @return bool
      */
-    private function isJsonArray($selectors)
+    private function isJsonArray(mixed $selectors): bool
     {
         return is_array($selectors) && is_int(key($selectors));
     }

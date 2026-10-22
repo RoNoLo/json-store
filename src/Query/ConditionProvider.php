@@ -2,8 +2,6 @@
 
 namespace RoNoLo\JsonStorage\Query;
 
-use Cassandra\Date;
-
 class ConditionProvider
 {
     /** All supported rules and their $-command */
@@ -24,7 +22,7 @@ class ConditionProvider
         '$regex' => 'isRegExMatch',
     ];
 
-    public function get($op, $value, $comparable)
+    public function get(string $op, mixed $value, mixed $comparable): \Closure
     {
         switch ($op) {
             case '$eq': return $this->isEqual($value, $comparable);
@@ -53,13 +51,8 @@ class ConditionProvider
      *
      * Type strict support for: int, float, string, datetime
      * Everything else including stdClass objects, arrays is checked not type strict.
-     *
-     * @param mixed $value
-     * @param mixed $comparable
-     *
-     * @return \Closure
      */
-    public function isEqual($value, $comparable)
+    public function isEqual(mixed $value, mixed $comparable): \Closure
     {
         return function () use ($value, $comparable)
         {
@@ -94,13 +87,8 @@ class ConditionProvider
      *
      * Type strict support for: int, float, string, datetime
      * Everything else including stdClass objects, arrays is checked not type strict.
-     *
-     * @param mixed $value
-     * @param mixed $comparable
-     *
-     * @return \Closure
      */
-    public function isNotEqual($value, $comparable)
+    public function isNotEqual(mixed $value, mixed $comparable): \Closure
     {
         return function () use ($value, $comparable)
         {
@@ -132,13 +120,8 @@ class ConditionProvider
 
     /**
      * Is Greater Than
-     *
-     * @param mixed $value
-     * @param mixed $comparable
-     *
-     * @return \Closure
      */
-    public function isGreaterThan($value, $comparable)
+    public function isGreaterThan(mixed $value, mixed $comparable): \Closure
     {
         return function () use ($value, $comparable)
         {
@@ -152,9 +135,6 @@ class ConditionProvider
                 case is_string($comparable) && is_string($value):
                     return strcmp($value, $comparable) > 0;
 
-                default:
-                    return $value > $comparable;
-
                 case is_object($comparable) && $comparable instanceof \DateTime:
                     $valueDateTime = $this->toDateTime($value);
 
@@ -163,19 +143,17 @@ class ConditionProvider
                     }
 
                     return $valueDateTime > $comparable;
+
+                default:
+                    return $value > $comparable;
             }
         };
     }
 
     /**
      * Strict less than
-     *
-     * @param mixed $value
-     * @param mixed $comparable
-     *
-     * @return \Closure
      */
-    public function isLessThan($value, $comparable)
+    public function isLessThan(mixed $value, mixed $comparable): \Closure
     {
         return function () use ($value, $comparable)
         {
@@ -189,9 +167,6 @@ class ConditionProvider
                 case is_string($comparable) && is_string($value):
                     return strcmp($value, $comparable) < 0;
 
-                default:
-                    return $value < $comparable;
-
                 case is_object($comparable) && $comparable instanceof \DateTime:
                     $valueDateTime = $this->toDateTime($value);
 
@@ -200,19 +175,17 @@ class ConditionProvider
                     }
 
                     return $valueDateTime < $comparable;
+
+                default:
+                    return $value < $comparable;
             }
         };
     }
 
     /**
      * Greater or equal
-     *
-     * @param mixed $value
-     * @param mixed $comparable
-     *
-     * @return \Closure
      */
-    public function isGreaterThanOrEqual($value, $comparable)
+    public function isGreaterThanOrEqual(mixed $value, mixed $comparable): \Closure
     {
         return function () use ($value, $comparable)
         {
@@ -226,9 +199,6 @@ class ConditionProvider
                 case is_string($comparable) && is_string($value):
                     return strcmp($value, $comparable) >= 0;
 
-                default:
-                    return $value >= $comparable;
-
                 case is_object($comparable) && $comparable instanceof \DateTime:
                     $valueDateTime = $this->toDateTime($value);
 
@@ -237,19 +207,17 @@ class ConditionProvider
                     }
 
                     return $valueDateTime >= $comparable;
+
+                default:
+                    return $value >= $comparable;
             }
         };
     }
 
     /**
      * Less or equal
-     *
-     * @param mixed $value
-     * @param mixed $comparable
-     *
-     * @return \Closure
      */
-    public function isLessThanOrEqual($value, $comparable)
+    public function isLessThanOrEqual(mixed $value, mixed $comparable): \Closure
     {
         return function () use ($value, $comparable)
         {
@@ -263,9 +231,6 @@ class ConditionProvider
                 case is_string($comparable) && is_string($value):
                     return strcmp($value, $comparable) <= 0;
 
-                default:
-                    return $value <= $comparable;
-
                 case is_object($comparable) && $comparable instanceof \DateTime:
                     $valueDateTime = $this->toDateTime($value);
 
@@ -274,21 +239,17 @@ class ConditionProvider
                     }
 
                     return $valueDateTime <= $comparable;
+
+                default:
+                    return $value <= $comparable;
             }
         };
     }
 
     /**
-     * In array
-     * or
-     * In String
-     *
-     * @param mixed $value
-     * @param array|string $comparable
-     *
-     * @return \Closure
+     * In array or In String
      */
-    public function isIn($value, $comparable)
+    public function isIn(mixed $value, mixed $comparable): \Closure
     {
         return function () use ($value, $comparable)
         {
@@ -305,16 +266,9 @@ class ConditionProvider
     }
 
     /**
-     * Not In Array
-     * or
-     * Not In String
-     *
-     * @param mixed $value
-     * @param array|string $comparable
-     *
-     * @return \Closure
+     * Not In Array or Not In String
      */
-    public function isNotIn($value, $comparable)
+    public function isNotIn(mixed $value, mixed $comparable): \Closure
     {
         return function () use ($value, $comparable)
         {
@@ -332,13 +286,8 @@ class ConditionProvider
 
     /**
      * Is Null
-     *
-     * @param mixed $value
-     * @param bool $comparable
-     *
-     * @return \Closure
      */
-    public function isNull($value, bool $comparable)
+    public function isNull(mixed $value, bool $comparable): \Closure
     {
         return function () use ($value, $comparable)
         {
@@ -348,13 +297,8 @@ class ConditionProvider
 
     /**
      * Is empty string or empty array.
-     *
-     * @param mixed $value
-     * @param bool $comparable
-     *
-     * @return \Closure
      */
-    public function isEmpty($value, bool $comparable)
+    public function isEmpty(mixed $value, bool $comparable): \Closure
     {
         return function () use ($value, $comparable)
         {
@@ -370,13 +314,8 @@ class ConditionProvider
 
     /**
      * Match with pattern
-     *
-     * @param mixed $value
-     * @param string $comparable
-     *
-     * @return \Closure
      */
-    public function isRegExMatch($value, $comparable)
+    public function isRegExMatch(mixed $value, string $comparable): \Closure
     {
         return function () use ($value, $comparable)
         {
@@ -395,13 +334,8 @@ class ConditionProvider
 
     /**
      * Contains substring in string
-     *
-     * @param mixed $value
-     * @param mixed $comparable
-     *
-     * @return \Closure
      */
-    public function contains($value, $comparable)
+    public function contains(mixed $value, mixed $comparable): \Closure
     {
         return function () use ($value, $comparable)
         {
@@ -430,13 +364,8 @@ class ConditionProvider
 
     /**
      * Contains substring in string
-     *
-     * @param mixed $value
-     * @param mixed $comparable
-     *
-     * @return \Closure
      */
-    public function notContains($value, $comparable)
+    public function notContains(mixed $value, mixed $comparable): \Closure
     {
         return function () use ($value, $comparable)
         {
@@ -464,12 +393,9 @@ class ConditionProvider
     }
 
     /**
-     * @param mixed $value
-     *
-     * @return \DateTime|null
      * @throws \Exception
      */
-    private function toDateTime($value)
+    private function toDateTime(mixed $value): ?\DateTime
     {
         if (is_object($value) && $value instanceof \DateTime) {
             return $value;
@@ -477,17 +403,14 @@ class ConditionProvider
             $dateTime = (new \DateTime($value->date, new \DateTimeZone($value->timezone)));
 
             return $dateTime ? $dateTime : null;
+        } elseif (is_int($value)) {
+            return (new \DateTime())->setTimestamp($value);
         } elseif (is_string($value)) {
             $dateTime = date_create($value);
 
             return $dateTime ? $dateTime : null;
         } else {
-            $unixtime = strtotime($value);
-            if ($unixtime === false) {
-                return null;
-            } else {
-                return (new \DateTime())->setTimestamp($unixtime);
-            }
+            return null;
         }
     }
 }

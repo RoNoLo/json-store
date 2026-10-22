@@ -10,17 +10,18 @@
         }
     ],
     "require": {
-        "php": ">= 7.2",
+        "php": ">= 8.3",
         "ext-json": "*",
-        "league/flysystem": "^1.1",
-        "ronolo/json-query": "^1.2"
+        "league/flysystem": "^3.0",
+        "ronolo/json-query": "^2.0"
     },
     "require-dev": {
         "ext-zlib": "*",
-        "phpunit/phpunit": "^8.4",
-        "league/flysystem-ziparchive": "^1.0",
-        "league/flysystem-memory": "^1.0",
-        "symfony/filesystem": "^4.3"
+        "phpunit/phpunit": "^13.0",
+        "league/flysystem-ziparchive": "^3.0",
+        "league/flysystem-memory": "^3.0",
+        "league/flysystem-local": "^3.0",
+        "symfony/filesystem": "^7.0 || ^8.0"
     },
     "suggest": {
         "league/flysystem-ziparchive": "Allows to have a single ZIP file as database",

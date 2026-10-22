@@ -2,7 +2,7 @@
 
 namespace RoNoLo\JsonStorage;
 
-use League\Flysystem\Memory\MemoryAdapter;
+use League\Flysystem\InMemory\InMemoryFilesystemAdapter;
 use RoNoLo\JsonStorage\Store\Config;
 use RoNoLo\JsonStorage\Store\Query;
 
@@ -10,7 +10,7 @@ class MemoryStoreTest extends StoreTestBase
 {
     public function testAddingWritingFindingWithMemoryStore()
     {
-        $store = Store::create((new Config())->setAdapter(new MemoryAdapter()));
+        $store = Store::create((new Config())->setAdapter(new InMemoryFilesystemAdapter()));
 
         $this->fillStore($store, $this->fixturesPath . DIRECTORY_SEPARATOR . 'store_1000_docs.json.gz');
 

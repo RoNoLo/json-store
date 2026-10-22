@@ -6,26 +6,15 @@ use RoNoLo\JsonQuery\JsonQuery;
 
 abstract class DocumentIterator implements \Iterator
 {
-    /** @var array */
-    protected $ids;
+    protected array $ids;
 
-    /** @var int */
-    protected $idx = 0;
+    protected int $idx = 0;
 
-    /** @var array */
-    protected $fields;
+    protected array $fields;
 
-    /** @var bool */
-    protected $assoc;
+    protected bool $assoc;
 
-    /**
-     * DocumentIterator constructor.
-     *
-     * @param array $ids
-     * @param array $fields
-     * @param bool $assoc
-     */
-    public function __construct(array &$ids, array $fields = [], $assoc = false)
+    public function __construct(array &$ids, array $fields = [], bool $assoc = false)
     {
         $this->ids = $ids;
         $this->fields = $fields;
@@ -35,12 +24,13 @@ abstract class DocumentIterator implements \Iterator
     /**
      * Return the current element
      */
+    #[\ReturnTypeWillChange]
     abstract public function current();
 
     /**
      * Move forward to next element.
      */
-    public function next()
+    public function next(): void
     {
         $this->idx++;
     }
@@ -48,6 +38,7 @@ abstract class DocumentIterator implements \Iterator
     /**
      * Return the key of the current element.
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return $this->ids[$this->idx];
@@ -56,7 +47,7 @@ abstract class DocumentIterator implements \Iterator
     /**
      * Checks if current position is valid.
      */
-    public function valid()
+    public function valid(): bool
     {
         return isset($this->ids[$this->idx]);
     }
@@ -64,19 +55,15 @@ abstract class DocumentIterator implements \Iterator
     /**
      * Rewind the Iterator to the first element.
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->idx = 0;
     }
 
     /**
      * Reduces the document fields, if requested.
-     *
-     * @param \stdClass|array $document
-     *
-     * @return \stdClass|array
      */
-    protected function reduceFields($document)
+    protected function reduceFields(\stdClass|array $document): \stdClass|array
     {
         if (!count($this->fields)) {
             return $this->assoc ? json_decode(json_encode($document), true) : $document;

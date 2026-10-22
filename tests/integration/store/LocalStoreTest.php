@@ -2,7 +2,7 @@
 
 namespace RoNoLo\JsonStorage;
 
-use League\Flysystem\Adapter\Local;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\Filesystem;
 use RoNoLo\JsonStorage\Store\Config;
 use RoNoLo\JsonStorage\Store\Query;
@@ -18,12 +18,14 @@ class LocalStoreTest extends StoreTestBase
 
     protected function setUp(): void
     {
-        $adapter = new Local($this->datastorePath);
+        parent::setUp();
+
+        $adapter = new LocalFilesystemAdapter($this->datastorePath);
 
         $this->flysystem = new Filesystem($adapter);
-        $this->flysystem->createDir($this->repoTestPath);
+        $this->flysystem->createDirectory($this->repoTestPath);
 
-        $this->datastoreAdapter = new Local($this->datastorePath . '/' . $this->repoTestPath);
+        $this->datastoreAdapter = new LocalFilesystemAdapter($this->datastorePath . '/' . $this->repoTestPath);
     }
 
     public function testAddingWritingFindingWithLocalAdapter()
@@ -79,7 +81,9 @@ class LocalStoreTest extends StoreTestBase
 
     protected function tearDown(): void
     {
-        $this->flysystem->deleteDir($this->repoTestPath);
+        $this->flysystem->deleteDirectory($this->repoTestPath);
+
+        parent::tearDown();
     }
 }
 

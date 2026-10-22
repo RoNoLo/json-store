@@ -2,17 +2,12 @@
 
 namespace RoNoLo\JsonStorage;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use RoNoLo\JsonStorage\Query\ConditionProvider;
 
 class ConditionProviderNotInTest extends TestBase
 {
-    /**
-     * @dataProvider equalProvider
-     *
-     * @param $expected
-     * @param $value
-     * @param $comparable
-     */
+    #[DataProvider('equalProvider')]
     public function testIsNotIn($expected, $value, $comparable)
     {
         $conditionExecutor = new ConditionProvider();
@@ -24,7 +19,7 @@ class ConditionProviderNotInTest extends TestBase
         $this->assertEquals($expected, $result);
     }
 
-    public function equalProvider()
+    public static function equalProvider(): array
     {
         return [
             [
